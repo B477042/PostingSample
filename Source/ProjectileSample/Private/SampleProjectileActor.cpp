@@ -19,7 +19,7 @@ ASampleProjectileActor::ASampleProjectileActor()
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 
 	SetRootComponent(sphereComponent);
-	meshComponent->AttachToComponent(sphereComponent,FAttachmentTransformRules::SnapToTargetIncludingScale);
+	meshComponent->AttachToComponent(sphereComponent,FAttachmentTransformRules::KeepRelativeTransform);
 	
 
 	
@@ -64,8 +64,9 @@ void ASampleProjectileActor::OnSphereOverlapped(	UPrimitiveComponent* Overlapped
 	
 	GEngine->AddOnScreenDebugMessage(0,2.0f,FColor::Red,TEXT("OnShpereOverlaped"));
 	sphereComponent->OnComponentBeginOverlap.Clear();
+
 	
-	BeginDestroy();
+	//Destroy();
 }
 
 void ASampleProjectileActor::ReadyToFireUsingInterpolation(TObjectPtr<AActor> ShooterActor, const FVector TargetToFire)

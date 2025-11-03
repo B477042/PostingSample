@@ -6,6 +6,10 @@
 #include "GameFramework/Pawn.h"
 #include "SamplePawn.generated.h"
 
+class UBoxComponent;
+class USpringArmComponent;
+class UCameraComponent;
+class ASampleProjectileActor;
 class UInputAction;
 class UInputMappingContext;
 
@@ -13,7 +17,15 @@ UCLASS(BlueprintType, Blueprintable)
 class PROJECTILESAMPLE_API ASamplePawn : public APawn
 {
 	GENERATED_BODY()
+public:
+	// 
+	enum class E_MoveFunctionMode :uint8
+	{
+		MoveComponent = 0,
+		Interpolation
+	};
 
+	
 public:
 	// Sets default values for this pawn's properties
 	ASamplePawn();
@@ -31,7 +43,27 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnClickMouse();
+
+	UFUNCTION(BlueprintCallable)
+	void SwitchMoveFunctionMode();
+
+protected:
+	
+	TObjectPtr<ASampleProjectileActor> makeProjectile();
+	
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Input",meta=(AllowPrivateAccess=true))
 	UInputAction* inputAction;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Camera",meta=(AllowPrivateAccess=true))
+	UCameraComponent* cameraComponent;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Camera",meta=(AllowPrivateAccess=true))
+	USpringArmComponent* springArmComponent;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,meta=(AllowPrivateAccess=true))
+	UStaticMeshComponent* staticMeshComponent;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,meta=(AllowPrivateAccess=true))
+	UBoxComponent* boxComponent;
+
+	E_MoveFunctionMode moveFunctionMode = E_MoveFunctionMode::MoveComponent;
 };

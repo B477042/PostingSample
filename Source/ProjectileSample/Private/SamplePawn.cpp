@@ -5,6 +5,10 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "SampleProjectileActor.h"
+#include "Camera/CameraComponent.h"
+#include "Components/BoxComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Input/WeaponFireInputAction.h"
 
 // Sets default values
@@ -12,6 +16,20 @@ ASamplePawn::ASamplePawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+
+	staticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	boxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
+	cameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	springArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
+
+
+	SetRootComponent(boxComponent);
+	staticMeshComponent->SetupAttachment(RootComponent);
+	
+	cameraComponent->SetupAttachment(springArmComponent);
+	springArmComponent->SetupAttachment(RootComponent);
+	
 
 }
 
@@ -37,8 +55,11 @@ void ASamplePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	{
 		return;
 	}
+
+	// この場合はマウスの左ボタンを押した時にイベントが発生します。
+	inputComponent->BindAction(inputAction,ETriggerEvent::Started,this,&ASamplePawn::OnClickMouse);
 	
-	 inputComponent->BindAction(inputAction,ETriggerEvent::Triggered,this,&ASamplePawn::OnClickMouse);
+
 	//inputComponent->BindAction(FName(TEXT("IA_WeaponFire")),ETriggerEvent::Triggered,this,&ASamplePawn::OnClickMouse);
 	//inputComponent->BindAction(nullptr,ETriggerEvent::Started,this,&ASamplePawn::OnClickMouse);
 
@@ -49,5 +70,51 @@ void ASamplePawn::OnClickMouse()
 {
 	// タイマーを確認
 	GEngine->AddOnScreenDebugMessage(0,2.0f,FColor::Green,TEXT("OnClickMouse"));
+	
+	TObjectPtr<ASampleProjectileActor> toShotProjectile = makeProjectile();
+
+	
+	// 基本的には下のように作成さればNGですが…
+	switch (moveFunctionMode)
+	{
+		case E_MoveFunctionMode::MoveComponent:
+			{
+				const FVector fireDirection = GetActorForwardVector().RotateAngleAxis(45.f,FVector::RightVector);
+				toShotProjectile->ReadyToFireUsingMoveComponent(this,fireDirection);
+			}
+		break;
+		case E_MoveFunctionMode::Interpolation:
+			{
+				
+			}
+		break;
+		
+		
+	}
+	
+}
+
+void ASamplePawn::SwitchMoveFunctionMode()
+{
+	moveFunctionMode == E_MoveFunctionMode::MoveComponent? moveFunctionMode = E_MoveFunctionMode::Interpolation : moveFunctionMode = E_MoveFunctionMode::MoveComponent;
+}
+
+TObjectPtr<ASampleProjectileActor> ASamplePawn::makeProjectile()
+{
+	TObjectPtr<ASampleProjectileActor> retObject = nullptr;
+	if (UWorld* world = GetWorld())
+	{
+
+		const FVector spawnLocation = GetActorLocation() + GetActorForwardVector() * 10.0f + FVector(0.0f,0.0f,30.f);
+		const FRotator spawnRotation = GetActorRotation();
+		retObject = world->SpawnActor<ASampleProjectileActor>(spawnLocation, spawnRotation);
+		
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("UWorld is Invalid"));
+	}
+
+	return retObject;
 }
 
