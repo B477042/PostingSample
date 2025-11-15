@@ -65,5 +65,8 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	UBoxComponent* boxComponent;
 
+	UPROPERTY(editAnywhere, BlueprintReadWrite, Category="Class", meta=(AllowPrivateAccess=true))
+	TSubclassOf<ASampleProjectileActor> projectileClass;
+	
 	E_MoveFunctionMode moveFunctionMode = E_MoveFunctionMode::MoveComponent;
 };

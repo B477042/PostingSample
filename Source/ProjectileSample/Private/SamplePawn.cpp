@@ -72,14 +72,15 @@ void ASamplePawn::OnClickMouse()
 	GEngine->AddOnScreenDebugMessage(0,2.0f,FColor::Green,TEXT("OnClickMouse"));
 	
 	TObjectPtr<ASampleProjectileActor> toShotProjectile = makeProjectile();
-
+	
+	
 	
 	// 基本的には下のように作成さればNGですが…
 	switch (moveFunctionMode)
 	{
 		case E_MoveFunctionMode::MoveComponent:
 			{
-				const FVector fireDirection = GetActorForwardVector().RotateAngleAxis(45.f,FVector::RightVector);
+				const FVector fireDirection = GetActorForwardVector().RotateAngleAxis(45.f,FVector::RightVector)*40000.f;
 				toShotProjectile->ReadyToFireUsingMoveComponent(this,fireDirection);
 			}
 		break;
@@ -105,9 +106,11 @@ TObjectPtr<ASampleProjectileActor> ASamplePawn::makeProjectile()
 	if (UWorld* world = GetWorld())
 	{
 
-		const FVector spawnLocation = GetActorLocation() + GetActorForwardVector() * 10.0f + FVector(0.0f,0.0f,30.f);
-		const FRotator spawnRotation = GetActorRotation();
-		retObject = world->SpawnActor<ASampleProjectileActor>(spawnLocation, spawnRotation);
+		FVector spawnLocation = GetActorLocation() + GetActorForwardVector() * 10.0f + FVector(0.0f,0.0f,230.f);
+		FRotator spawnRotation = GetActorRotation();
+		
+		retObject = world->SpawnActor<ASampleProjectileActor>(projectileClass.Get());
+		retObject->SetActorLocationAndRotation(spawnLocation,spawnRotation);
 		
 	}
 	else

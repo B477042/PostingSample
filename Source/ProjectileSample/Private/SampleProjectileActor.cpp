@@ -25,6 +25,7 @@ ASampleProjectileActor::ASampleProjectileActor()
 	
 	//sphereComponent->SetCollisionProfileName(TEXT("OverlapAll"));
 	
+	
 }
 
 // Called when the game starts or when spawned
@@ -40,6 +41,11 @@ void ASampleProjectileActor::PostInitializeComponents()
 	
 	projectileMovementComponent->SetUpdatedComponent(sphereComponent);
 	sphereComponent->OnComponentBeginOverlap.AddDynamic(this,&ASampleProjectileActor::OnSphereOverlapped);
+	
+	projectileMovementComponent->InitialSpeed = movementInitData.initSpeed;
+	projectileMovementComponent->MaxSpeed = movementInitData.maxSpeed;
+	projectileMovementComponent->ProjectileGravityScale=0.f;
+	
 }
 
 // Called every frame
