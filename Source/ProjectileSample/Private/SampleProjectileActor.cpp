@@ -44,7 +44,7 @@ void ASampleProjectileActor::PostInitializeComponents()
 	
 	projectileMovementComponent->InitialSpeed = movementInitData.initSpeed;
 	projectileMovementComponent->MaxSpeed = movementInitData.maxSpeed;
-	projectileMovementComponent->ProjectileGravityScale=0.f;
+	//projectileMovementComponent->ProjectileGravityScale=0.f;
 	
 }
 
@@ -83,12 +83,11 @@ void ASampleProjectileActor::ReadyToFireUsingInterpolation(TObjectPtr<AActor> Sh
 	//UGameplayStatics::PredictProjectilePath();
 	projectileMovementComponent->MoveInterpolationTarget(TargetToFire,GetActorRotation());
 	//MeshComponentのマテリアルのカーラを変わってより認識やすくなるために
-	if(UMaterialInterface* material = meshComponent->GetMaterial(0))
+	if(UMaterialInstanceDynamic* material = meshComponent->CreateDynamicMaterialInstance(0))
 	{
-		FName paramName = FName(TEXT("MainColor"));
-		FLinearColor materialColor; 
-		material->GetVectorParameterValue(paramName,materialColor);
-		materialColor = FLinearColor::Red;
+		const FName paramName = FName(TEXT("MainColor"));
+		material->SetVectorParameterValue(paramName,FLinearColor::Blue);
+    	
 	}
 	
 }
@@ -96,14 +95,15 @@ void ASampleProjectileActor::ReadyToFireUsingInterpolation(TObjectPtr<AActor> Sh
 void ASampleProjectileActor::ReadyToFireUsingMoveComponent(TObjectPtr<AActor> ShooterActor, const FVector Direction)
 {
 	SetOwner(ShooterActor);
-	projectileMovementComponent->MoveUpdatedComponent(Direction,GetActorRotation(),true);
+	//projectileMovementComponent->MoveUpdatedComponent(Direction,GetActorRotation(),true);
+
+	projectileMovementComponent->AddForce(Direction*100000.f);
 	//MeshComponentのマテリアルのカーラを変わってより認識やすくなるために
-    if(UMaterialInterface* material = meshComponent->GetMaterial(0))
+    if(UMaterialInstanceDynamic* material = meshComponent->CreateDynamicMaterialInstance(0))
     {
-    	FName paramName = FName(TEXT("MainColor"));
-    	FLinearColor materialColor; 
-    	material->GetVectorParameterValue(paramName,materialColor);
-    	materialColor = FLinearColor::Blue;
+    	const FName paramName = FName(TEXT("MainColor"));
+    	material->SetVectorParameterValue(paramName,FLinearColor::Red);
+    	
     }
 }
 

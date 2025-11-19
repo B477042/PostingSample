@@ -80,7 +80,7 @@ void ASamplePawn::OnClickMouse()
 	{
 		case E_MoveFunctionMode::MoveComponent:
 			{
-				const FVector fireDirection = GetActorForwardVector().RotateAngleAxis(45.f,FVector::RightVector)*40000.f;
+				const FVector fireDirection = GetActorForwardVector().RotateAngleAxis(-45.f,FVector::RightVector);
 				toShotProjectile->ReadyToFireUsingMoveComponent(this,fireDirection);
 			}
 		break;
