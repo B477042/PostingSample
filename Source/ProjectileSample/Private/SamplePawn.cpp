@@ -8,7 +8,8 @@
 #include "SampleProjectileActor.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
+
+#include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Input/WeaponFireInputAction.h"
 
@@ -23,7 +24,7 @@ ASamplePawn::ASamplePawn()
 	boxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	cameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	springArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
-	characterMovementComponent = CreateDefaultSubobject<UCharacterMovementComponent>(TEXT("UCharacterMovementComponent"));
+	pawnMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("UFloatingPawnMovement"));
 	
 
 	SetRootComponent(boxComponent);
@@ -31,10 +32,8 @@ ASamplePawn::ASamplePawn()
 	
 	cameraComponent->SetupAttachment(springArmComponent);
 	springArmComponent->SetupAttachment(RootComponent);
-	if (characterMovementComponent)
-	{
-		characterMovementComponent->SetUpdatedComponent(RootComponent);
-	}
+	
+	pawnMovementComponent->SetUpdatedComponent(RootComponent);
 
 }
 
@@ -43,7 +42,7 @@ void ASamplePawn::movePawn(const FInputActionValue& Value)
 	const FVector2D movementVector = Value.Get<FVector2D>();
 	GEngine->AddOnScreenDebugMessage(0,2.0f,FColor::Green,*movementVector.ToString());
 	GEngine->AddOnScreenDebugMessage(1,2.0f,FColor::Green,*GetActorLocation().ToString());
-	if (GetMovementComponent())
+	if (UPawnMovementComponent* movecomp = GetMovementComponent())
 	{
 		AddMovementInput(GetActorForwardVector(),movementVector.Y);
 		AddMovementInput(GetActorRightVector(),movementVector.X);
@@ -96,6 +95,12 @@ void ASamplePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	
 }
 
+void ASamplePawn::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	
+}
+
 void ASamplePawn::OnClickMouse()
 {
 	// タイマーを確認
@@ -136,7 +141,7 @@ TObjectPtr<ASampleProjectileActor> ASamplePawn::makeProjectile()
 	if (UWorld* world = GetWorld())
 	{
 
-		FVector spawnLocation = GetActorLocation() + GetActorForwardVector() * 10.0f + FVector(0.0f,0.0f,230.f);
+		FVector spawnLocation = GetActorLocation() + GetActorForwardVector() * 100.0f + FVector(0.0f,0.0f,230.f);
 		FRotator spawnRotation = GetActorRotation();
 		
 		retObject = world->SpawnActor<ASampleProjectileActor>(projectileClass.Get());

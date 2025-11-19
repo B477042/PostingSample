@@ -6,7 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "SamplePawn.generated.h"
 
-class UCharacterMovementComponent;
+class UFloatingPawnMovement;
 struct FInputActionValue;
 class UBoxComponent;
 class USpringArmComponent;
@@ -42,12 +42,16 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
+	virtual void PostInitializeComponents() override;
+	
 	UFUNCTION(BlueprintCallable)
 	void OnClickMouse();
 
 	UFUNCTION(BlueprintCallable)
 	void SwitchMoveFunctionMode();
+	
+	
 
 protected:
 	
@@ -83,7 +87,7 @@ protected:
 	TSubclassOf<ASampleProjectileActor> projectileClass;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement", meta=(AllowPrivateAccess=true))
-	UCharacterMovementComponent* characterMovementComponent;
+	UFloatingPawnMovement* pawnMovementComponent;
 	
 	E_MoveFunctionMode moveFunctionMode = E_MoveFunctionMode::MoveComponent;
 };

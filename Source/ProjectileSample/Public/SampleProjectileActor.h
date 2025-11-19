@@ -10,18 +10,6 @@ class USphereComponent;
 class UProjectileMovementComponent;
 
 
-USTRUCT(blueprintType)
-struct FMovementInitStruct
-{
-	GENERATED_BODY()
-public:
-	FMovementInitStruct(){}
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float initSpeed = 600.f;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float maxSpeed = 1800.f;
-};
 
 UCLASS(Blueprintable,BlueprintType)
 class PROJECTILESAMPLE_API ASampleProjectileActor : public AActor
@@ -64,7 +52,4 @@ protected:
 	UPROPERTY(BlueprintReadWrite,EditAnywhere,meta=(AllowPrivateAccess=true))
 	TObjectPtr<UStaticMeshComponent> meshComponent;
 	
-	// projectile settings
-	UPROPERTY(blueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
-	FMovementInitStruct movementInitData;
 };

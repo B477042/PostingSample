@@ -22,10 +22,12 @@ ASampleProjectileActor::ASampleProjectileActor()
 	meshComponent->AttachToComponent(sphereComponent,FAttachmentTransformRules::KeepRelativeTransform);
 	
 
+	projectileMovementComponent->InitialSpeed = 500.f;
+	projectileMovementComponent->MaxSpeed = 1500.f;
+	projectileMovementComponent->bShouldBounce=false;
 	
-	//sphereComponent->SetCollisionProfileName(TEXT("OverlapAll"));
 	
-	
+	InitialLifeSpan = 10.0f;
 }
 
 // Called when the game starts or when spawned
@@ -42,8 +44,7 @@ void ASampleProjectileActor::PostInitializeComponents()
 	projectileMovementComponent->SetUpdatedComponent(sphereComponent);
 	sphereComponent->OnComponentBeginOverlap.AddDynamic(this,&ASampleProjectileActor::OnSphereOverlapped);
 	
-	projectileMovementComponent->InitialSpeed = movementInitData.initSpeed;
-	projectileMovementComponent->MaxSpeed = movementInitData.maxSpeed;
+	
 	//projectileMovementComponent->ProjectileGravityScale=0.f;
 	
 }
@@ -52,6 +53,8 @@ void ASampleProjectileActor::PostInitializeComponents()
 void ASampleProjectileActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	GEngine->AddOnScreenDebugMessage(3,1.0f,FColor::Red,FString::Printf(TEXT("%s Velocity : %s"),*GetName(),*projectileMovementComponent->Velocity.ToString()));
 }
 
 void ASampleProjectileActor::OnSphereOverlapped(	UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
@@ -88,7 +91,7 @@ void ASampleProjectileActor::ReadyToFireUsingInterpolation(TObjectPtr<AActor> Sh
 		const FName paramName = FName(TEXT("MainColor"));
 		material->SetVectorParameterValue(paramName,FLinearColor::Blue);
     	
-	}
+	} 
 	
 }
 
@@ -97,7 +100,7 @@ void ASampleProjectileActor::ReadyToFireUsingMoveComponent(TObjectPtr<AActor> Sh
 	SetOwner(ShooterActor);
 	//projectileMovementComponent->MoveUpdatedComponent(Direction,GetActorRotation(),true);
 
-	projectileMovementComponent->AddForce(Direction*100000.f);
+	//projectileMovementComponent->AddForce(Direction*100000.f);
 	//MeshComponentのマテリアルのカーラを変わってより認識やすくなるために
     if(UMaterialInstanceDynamic* material = meshComponent->CreateDynamicMaterialInstance(0))
     {
