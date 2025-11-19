@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "SamplePawn.generated.h"
 
+class UCharacterMovementComponent;
+struct FInputActionValue;
 class UBoxComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -51,10 +53,22 @@ protected:
 	
 	TObjectPtr<ASampleProjectileActor> makeProjectile();
 	
+	void movePawn(const FInputActionValue& Value);
+	void lookUp(const FInputActionValue& Value);
 protected:
+	
+	UPROPERTY(EditAnywhere,blueprintReadWrite,Category="Input",meta=(AllowPrivateAccess=true))
+	UInputMappingContext* pawnBasicInputMapping;
+
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Input",meta=(AllowPrivateAccess=true))
 	UInputAction* inputAction;
-
+	
+	UPROPERTY(editAnywhere, BlueprintReadWrite, Category="Input", meta=(AllowPrivateAccess=true))
+	UInputAction* moveAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input", meta=(AllowPrivateAccess=true))
+	UInputAction* lookAction;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Camera",meta=(AllowPrivateAccess=true))
 	UCameraComponent* cameraComponent;
 	
@@ -65,8 +79,11 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	UBoxComponent* boxComponent;
 
-	UPROPERTY(editAnywhere, BlueprintReadWrite, Category="Class", meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Class", meta=(AllowPrivateAccess=true))
 	TSubclassOf<ASampleProjectileActor> projectileClass;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement", meta=(AllowPrivateAccess=true))
+	UCharacterMovementComponent* characterMovementComponent;
 	
 	E_MoveFunctionMode moveFunctionMode = E_MoveFunctionMode::MoveComponent;
 };

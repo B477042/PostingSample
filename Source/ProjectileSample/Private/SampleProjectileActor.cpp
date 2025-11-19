@@ -68,7 +68,7 @@ void ASampleProjectileActor::OnSphereOverlapped(	UPrimitiveComponent* Overlapped
 	}
 	
 	
-	GEngine->AddOnScreenDebugMessage(0,2.0f,FColor::Red,TEXT("OnShpereOverlaped"));
+	GEngine->AddOnScreenDebugMessage(1,2.0f,FColor::Red,TEXT("OnShpereOverlaped"));
 	sphereComponent->OnComponentBeginOverlap.Clear();
 
 	

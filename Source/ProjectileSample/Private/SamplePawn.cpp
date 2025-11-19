@@ -8,6 +8,7 @@
 #include "SampleProjectileActor.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Input/WeaponFireInputAction.h"
 
@@ -22,22 +23,50 @@ ASamplePawn::ASamplePawn()
 	boxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	cameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	springArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
-
+	characterMovementComponent = CreateDefaultSubobject<UCharacterMovementComponent>(TEXT("UCharacterMovementComponent"));
+	
 
 	SetRootComponent(boxComponent);
 	staticMeshComponent->SetupAttachment(RootComponent);
 	
 	cameraComponent->SetupAttachment(springArmComponent);
 	springArmComponent->SetupAttachment(RootComponent);
-	
+	if (characterMovementComponent)
+	{
+		characterMovementComponent->SetUpdatedComponent(RootComponent);
+	}
 
+}
+
+void ASamplePawn::movePawn(const FInputActionValue& Value)
+{
+	const FVector2D movementVector = Value.Get<FVector2D>();
+	GEngine->AddOnScreenDebugMessage(0,2.0f,FColor::Green,*movementVector.ToString());
+	GEngine->AddOnScreenDebugMessage(1,2.0f,FColor::Green,*GetActorLocation().ToString());
+	if (GetMovementComponent())
+	{
+		AddMovementInput(GetActorForwardVector(),movementVector.Y);
+		AddMovementInput(GetActorRightVector(),movementVector.X);
+	}
+}
+
+void ASamplePawn::lookUp(const FInputActionValue& Value)
+{
+	const FVector2D lookAxisVector = Value.Get<FVector2D>();
+	
+	if (Controller)
+	{
+		AddControllerYawInput(lookAxisVector.X);
+		AddControllerPitchInput(lookAxisVector.Y);
+	}
 }
 
 // Called when the game starts or when spawned
 void ASamplePawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	auto it = GetMovementComponent();
+	int32 a = 0;
 }
 
 // Called every frame
@@ -58,7 +87,8 @@ void ASamplePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	// この場合はマウスの左ボタンを押した時にイベントが発生します。
 	inputComponent->BindAction(inputAction,ETriggerEvent::Started,this,&ASamplePawn::OnClickMouse);
-	
+	inputComponent->BindAction(moveAction,ETriggerEvent::Triggered,this,&ASamplePawn::movePawn);
+	inputComponent->BindAction(lookAction,ETriggerEvent::Triggered,this,&ASamplePawn::lookUp);
 
 	//inputComponent->BindAction(FName(TEXT("IA_WeaponFire")),ETriggerEvent::Triggered,this,&ASamplePawn::OnClickMouse);
 	//inputComponent->BindAction(nullptr,ETriggerEvent::Started,this,&ASamplePawn::OnClickMouse);
