@@ -4,10 +4,16 @@
    <Group
       location = "container:"      name = "Engine">
       <FileRef
+         location = "group:Intermediate/ProjectFiles/UnrealClient (Mac).xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Intermediate/ProjectFiles/UnrealEditor (Mac).xcodeproj">
       </FileRef>
       <FileRef
          location = "group:Intermediate/ProjectFiles/UnrealGame (Mac).xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Intermediate/ProjectFiles/UnrealServer (Mac).xcodeproj">
       </FileRef>
    </Group>
    <Group
