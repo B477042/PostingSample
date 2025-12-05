@@ -1,5 +1,9 @@
 ﻿#include "ProjectileSampleEditor.h"
+
+#include "ClassType/AgentInfoList.h"
+#include "ClassType/FMyActorDetail.h"
 #include "Modules/ModuleManager.h"
+#include "StructType/AgentInfoDetailPanel.h"
 
 void FProjectileSampleEditorModule::StartupModule()
 {
@@ -7,6 +11,9 @@ void FProjectileSampleEditorModule::StartupModule()
 	
 	FPropertyEditorModule& propertyEditor = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	// クラスや構造体を登録する。
+	
+	propertyEditor.RegisterCustomClassLayout(AAgentInfoList::StaticClass()->GetFName(),FOnGetDetailCustomizationInstance::CreateStatic(&FMyActorDetail::MakeInstance));
+	propertyEditor.RegisterCustomPropertyTypeLayout(FAgentInfo::StaticStruct()->GetFName(),FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FAgentInfoDetailPanel::MakeInstance));
 }
 
 void FProjectileSampleEditorModule::ShutdownModule()

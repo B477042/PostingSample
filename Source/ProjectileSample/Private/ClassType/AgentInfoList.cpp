@@ -3,7 +3,7 @@
 
 #include "ClassType/AgentInfoList.h"
 
-#include "StrcutType/AgentInfo.h"
+
 
 
 // Sets default values

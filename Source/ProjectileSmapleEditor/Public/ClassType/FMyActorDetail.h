@@ -13,10 +13,13 @@
 class  FMyActorDetail : public IDetailCustomization
 {
 public:
-	static TSharedPtr<IDetailCustomization> MakeInstance();
+	static TSharedRef<IDetailCustomization> MakeInstance();
 	
 public:
 	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
 	
+protected:
+	void hideDefaultActorCategories(IDetailLayoutBuilder& DetailBuilder);
 	
+	void designDataCategory(IDetailLayoutBuilder& DetailBuilder);
 };

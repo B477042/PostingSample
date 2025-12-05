@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "StrcutType/AgentInfo.h"
 #include "AgentInfoList.generated.h"
 
-struct FAgentInfo;
+
 
 UCLASS(Blueprintable)
 class PROJECTILESAMPLE_API AAgentInfoList : public AActor

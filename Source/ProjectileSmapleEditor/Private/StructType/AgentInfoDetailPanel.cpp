@@ -13,13 +13,20 @@ TSharedRef<IPropertyTypeCustomization> FAgentInfoDetailPanel::MakeInstance()
 void FAgentInfoDetailPanel::CustomizeHeader(TSharedRef<IPropertyHandle> PropertyHandle, FDetailWidgetRow& HeaderRow,
 	IPropertyTypeCustomizationUtils& CustomizationUtils)
 {
+	TSharedRef<SWidget> nameWidget = PropertyHandle->CreatePropertyNameWidget();
+	TSharedRef<SWidget> valueWidget = PropertyHandle->CreatePropertyValueWidget();
+	nameWidget->SetToolTipText(FText::FromString(FString::Printf(TEXT("이것은 헤더여"))));
+	valueWidget->SetToolTipText(FText::FromString(FString::Printf(TEXT("이것은 value"))));
+	
+	
 	HeaderRow.NameContent()
 	[
-		PropertyHandle->CreatePropertyNameWidget()	
+		nameWidget
+		
 	]
 	.ValueContent()
 	[
-		PropertyHandle->CreatePropertyValueWidget()
+		valueWidget
 	];
 	
 }
@@ -28,4 +35,8 @@ void FAgentInfoDetailPanel::CustomizeChildren(TSharedRef<IPropertyHandle> Proper
 	IDetailChildrenBuilder& ChildBuilder, IPropertyTypeCustomizationUtils& CustomizationUtils)
 {
 	
+}
+
+FAgentInfoDetailPanel::~FAgentInfoDetailPanel()
+{
 }

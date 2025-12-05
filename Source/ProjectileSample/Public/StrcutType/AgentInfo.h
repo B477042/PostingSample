@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "AgentInfo.generated.h"
 
 /**
  * 
@@ -20,12 +20,12 @@ enum class EAgentInteractionType : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FAgentInfo
+struct PROJECTILESAMPLE_API FAgentInfo
 {
-
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
+public:
 	
-	FAgentInfo();
+	FAgentInfo(){}
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category="Data")
 	FString agentName;
