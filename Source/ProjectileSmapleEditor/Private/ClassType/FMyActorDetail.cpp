@@ -6,6 +6,7 @@
 #include "DetailCategoryBuilder.h"
 #include "DetailLayoutBuilder.h"
 #include "DetailWidgetRow.h"
+#include "SWidget/SExtendedAgentWindow.h"
 
 TSharedRef<IDetailCustomization> FMyActorDetail::MakeInstance()
 {
@@ -54,25 +55,26 @@ void FMyActorDetail::designDataCategory(IDetailLayoutBuilder& DetailBuilder)
 		.Text(FText::FromString(TEXT("눌러봐")))
 		.OnClicked_Lambda([]()->FReply
 		{
-			TSharedRef<SWindow> newPopup = SNew(SWindow)
-			.Type(EWindowType::Normal)
-			.IsPopupWindow(false)
-			.SupportsMaximize(true)
-			.SupportsMinimize(true)
-			.HasCloseButton(true)
-			.CreateTitleBar(true)
-			.ClientSize(FVector2D(800.0f, 800.0f))
-			.Title(FText::FromString(TEXT("Hello")))
-				[
-					SNew(SBorder)
-					[
-						SNew(STextBlock)
-						.Text(FText::FromString(TEXT("Hellowindow")))
-					]
-				]
-			; 
-			TSharedPtr<SWindow> ParentWindow =
-		   FSlateApplication::Get().FindBestParentWindowForDialogs(nullptr);
+			// TSharedRef<SWindow> newPopup = SNew(SWindow)
+			// .Type(EWindowType::Normal)
+			// .IsPopupWindow(false)
+			// .SupportsMaximize(true)
+			// .SupportsMinimize(true)
+			// .HasCloseButton(true)
+			// .CreateTitleBar(true)
+			// .ClientSize(FVector2D(800.0f, 800.0f))
+			// .Title(FText::FromString(TEXT("Hello")))
+			// 	[
+			// 		SNew(SBorder)
+			// 		[
+			// 			SNew(STextBlock)
+			// 			.Text(FText::FromString(TEXT("Hellowindow")))
+			// 		]
+			// 	]
+			// ; 
+			TSharedRef<SExtendedAgentInfoWidget> newPopup = SExtendedAgentInfoWidget::MakeExtendedAgentInfoWidget();
+			
+			TSharedPtr<SWindow> ParentWindow = FSlateApplication::Get().FindBestParentWindowForDialogs(nullptr);
 			ParentWindow.IsValid()?
 			FSlateApplication::Get().AddWindowAsNativeChild(newPopup,ParentWindow.ToSharedRef()):
 			FSlateApplication::Get().AddWindow(newPopup);
