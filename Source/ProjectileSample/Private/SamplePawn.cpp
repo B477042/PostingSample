@@ -72,7 +72,7 @@ void ASamplePawn::BeginPlay()
 void ASamplePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input

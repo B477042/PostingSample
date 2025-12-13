@@ -4,6 +4,7 @@
 #include "ProjectileSmapleEditor/Public/StructType/AgentInfoDetailPanel.h"
 
 #include "DetailWidgetRow.h"
+#include "IDetailChildrenBuilder.h"
 
 TSharedRef<IPropertyTypeCustomization> FAgentInfoDetailPanel::MakeInstance()
 {
@@ -34,7 +35,17 @@ void FAgentInfoDetailPanel::CustomizeHeader(TSharedRef<IPropertyHandle> Property
 void FAgentInfoDetailPanel::CustomizeChildren(TSharedRef<IPropertyHandle> PropertyHandle,
 	IDetailChildrenBuilder& ChildBuilder, IPropertyTypeCustomizationUtils& CustomizationUtils)
 {
-	
+	ChildBuilder.AddCustomRow(FText::FromString(TEXT("ウラララ")))
+	.NameWidget
+	[
+		SNew(STextBlock)
+		.Text(FText::FromString(TEXT("Child Header")))
+	]
+	.ValueWidget
+	[
+		SNew(STextBlock)
+		.Text(FText::FromString(TEXT("Child Value")))
+	];
 }
 
 FAgentInfoDetailPanel::~FAgentInfoDetailPanel()

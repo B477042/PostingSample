@@ -26,6 +26,8 @@ public:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Data")
 	TMap<int32,FAgentInfo> agentList;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Data")
+	TArray<FAgentInfo> test;
 };
 
 

@@ -39,7 +39,8 @@ void FMyActorDetail::hideDefaultActorCategories(IDetailLayoutBuilder& DetailBuil
 		}
 		DetailBuilder.HideCategory(category);
 	}
-	
+	 IDetailCategoryBuilder& transformCategory = DetailBuilder.EditCategory(FName("TransformCommon"));
+	transformCategory.SetCategoryVisibility(false);
 }
 
 void FMyActorDetail::designDataCategory(IDetailLayoutBuilder& DetailBuilder)
@@ -47,12 +48,12 @@ void FMyActorDetail::designDataCategory(IDetailLayoutBuilder& DetailBuilder)
 	IDetailCategoryBuilder& dataCategoryBuilder = DetailBuilder.EditCategory(FName("Data"));
 	IDetailsView* detailsview = DetailBuilder.GetDetailsView();
 	
-	IDetailPropertyRow& agentListPropertyHandle = dataCategoryBuilder.AddProperty("AgentList");
+	
 	dataCategoryBuilder.AddCustomRow(FText::FromString(FString::Printf(TEXT("따라ㄸㅏ라라라"))))
 	.NameWidget
 	[
 		SNew(SButton)
-		.Text(FText::FromString(TEXT("눌러봐")))
+		.Text(FText::FromString(TEXT("推してウィンドウをひろく")))
 		.OnClicked_Lambda([]()->FReply
 		{
 			// TSharedRef<SWindow> newPopup = SNew(SWindow)
@@ -74,6 +75,8 @@ void FMyActorDetail::designDataCategory(IDetailLayoutBuilder& DetailBuilder)
 			// ; 
 			TSharedRef<SExtendedAgentInfoWidget> newPopup = SExtendedAgentInfoWidget::MakeExtendedAgentInfoWidget();
 			
+			
+			
 			TSharedPtr<SWindow> ParentWindow = FSlateApplication::Get().FindBestParentWindowForDialogs(nullptr);
 			ParentWindow.IsValid()?
 			FSlateApplication::Get().AddWindowAsNativeChild(newPopup,ParentWindow.ToSharedRef()):
@@ -85,6 +88,11 @@ void FMyActorDetail::designDataCategory(IDetailLayoutBuilder& DetailBuilder)
 	.ValueWidget	
 	;
 	
-	
+	IDetailPropertyRow& agentListPropertyRow= dataCategoryBuilder.AddProperty("AgentList");
+	agentListPropertyRow.DisplayName(FText::FromString(FString::Printf(TEXT("CUSTOM NAME"))));
+	TSharedPtr<IPropertyHandle> agentListPropertyHandle =  agentListPropertyRow.GetPropertyHandle();
+	agentListPropertyHandle->SetPropertyDisplayName(FText::FromString(FString::Printf(TEXT("PropertyDisplayName"))));
+	TSharedRef<SWidget> valuewidget = agentListPropertyHandle->CreatePropertyValueWidget();
+	valuewidget=SNew(STextBlock).Text(FText::FromString(FString::Printf(TEXT("uwnfisik"))));
 }
 

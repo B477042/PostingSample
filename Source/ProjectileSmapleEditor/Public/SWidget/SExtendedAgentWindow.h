@@ -4,14 +4,25 @@
 
 #include "CoreMinimal.h"
 
+class AAgentInfoList;
+
 class PROJECTILESAMPLEEDITOR_API SExtendedAgentInfoWidget : public SWindow
 {
 public:
 	
 	
-	SExtendedAgentInfoWidget();
+SExtendedAgentInfoWidget();
 	virtual ~SExtendedAgentInfoWidget() override;
 public:
+	SLATE_BEGIN_ARGS(SExtendedAgentInfoWidget)
+		:_ClientSize( FVector2f::ZeroVector ){}
+		SLATE_ARGUMENT( UE::Slate::FDeprecateVector2DParameter, ClientSize )
+	SLATE_END_ARGS()
+	void Construct(const FArguments&);
+	
 	static TSharedRef<SExtendedAgentInfoWidget> MakeExtendedAgentInfoWidget();
 	
+	//	TSharedPtr<ISinglePropertyView> agentInfoDetailView;
+	TSharedPtr<IDetailsView> agentInfoDetailView;
+	TWeakObjectPtr<AAgentInfoList> agentInfoList;
 };
