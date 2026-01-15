@@ -6,7 +6,7 @@ public class ProjectileSampleEditor : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ProjectileSample","Slate", "SlateCore","PropertyEditor"  });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ProjectileSample","Slate", "SlateCore","PropertyEditor","GameplayAbilitiesEditor"  });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
