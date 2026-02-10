@@ -1,0 +1,46 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+class GasComponent
+{
+GameEfects continer
+TArray<AGameAbility*>
+}
+
+class AGasPlayerState
+{
+- GasComponent GasComponent
+
+}
+
+class AGasCharacter
+{
+
+}
+
+class AGasPlayerController
+{
+}
+
+class AGasAIController
+{
+}
+
+
+class AGasEffectTest
+
+class AGasAttributeSet
+
+class AGasAbility
+
+
+GasComponent <-- AGasPlayerState
+AGasPlayerState -> AGasPlayerController
+AGasCharacter --> AGasPlayerController
+AGasCharacter --> AGasAIController
+AGasEffectTest <-- GasComponent
+AGasAttributeSet <- GasComponent 
+AGasAbility o-- GasComponent
+
+
+@enduml

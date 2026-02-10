@@ -1,0 +1,86 @@
+@startuml
+'https://plantuml.com/class-diagram
+abstract UGameplayTasksComponent
+{
+'AbilityTaskを実行する為のAbstruct Class
+}
+
+class UAbilitySystemComponent
+{
+'担当する役割は、大きく分けると三つあります。
+'GameAbilityを扱う
+
+'コメントによるとインスタンスされてないアビリティーはCDOをつかっています。
+# FGameplayAbilitySpecContainer ActivatableAbilities
+# TArray<TObjectPtr<UGameplayAbility>>	AllReplicatedInstancedAbilities
+
++ FGameplayAbilitySpecHandle GiveAbility(const FGameplayAbilitySpec& AbilitySpec)
++ void CancelAbility(UGameplayAbility* Ability)
++ virtual float PlayMontage(UGameplayAbility* AnimatingAbility, FGameplayAbilityActivationInfo ActivationInfo, UAnimMontage* Montage, float InPlayRate)
++ void ExecuteGameplayCue(const FGameplayTag GameplayCueTag, FGameplayEffectContextHandle EffectContext = FGameplayEffectContextHandle())
++ virtual FActiveGameplayEffectHandle ApplyGameplayEffectSpecToTarget/Self(const FGameplayEffectSpec& GameplayEffect)
++ virtual void SetReplicationMode(EGameplayEffectReplicationMode NewReplicationMode)
++ void AddSpawnedAttribute(UAttributeSet* Attribute)
+}
+
+abstract UGameplayTask
+{
+    # TWeakInterfacePtr<IGameplayTaskOwnerInterface> TaskOwner
+	# TWeakObjectPtr<UGameplayTasksComponent>	TasksComponent
+    # uint32 bTickingTask : 1
+    # uint32 bSimulatedTask : 1
+    # uint32 bIsSimulating : 1
+
+    'Initializes the task with the task owner interface instance but does not activate until Activate() is called 
+	# void InitTask(IGameplayTaskOwnerInterface& InTaskOwner, uint8 InPriority)
+	# virtual void Activate()
+}
+abstract UAbilityTask
+{
+
+	+ TObjectPtr<UGameplayAbility> Ability
+	+ TWeakObjectPtr<UAbilitySystemComponent> AbilitySystemComponent
+	
+    + FGameplayAbilitySpecHandle GetAbilitySpecHandle() const
+    + static T* NewAbilityTask(UGameplayAbility* ThisAbility)
+}
+
+class UGameplayAbility
+{
+   # mutable const FGameplayAbilityActorInfo* CurrentActorInfo
+  
+}
+'外見だけ見ると一番難解なクラス. 簡単に言うとActorに影響を与えるすべての効果です。
+'변조를 방지하기 위해서 런타임에서 수정은 불가능한 점이 특징
+'Create 될 때 수정하는 트릭이 잇긴 하지만
+
+'FAKE DURATION : 
+'
+class UGameplayEffect
+{
+'Can we Apply this Gameplay Effect?  Note: Apply is the generic term for adding to the active container or executing it.
++ bool CanApply(const FActiveGameplayEffectsContainer& ActiveGEContainer, const FGameplayEffectSpec& GESpec) const
+
+}
+'GameplayEffectの行動を宣言します。
+'5.3에서 추가된 컴포넌트. GameEffect를 프로젝트에 맞춰서 수정할 수 있게 만든 컴포넌트다
+abstract UGameplayEffectComponent
+{
+}
+'GameplayEffect Specification.
+
+
+struct FGameplayEffectSpec
+{
+}
+
+
+'Active GameplayEffect instance
+struct FActiveGameplayEffect
+
+
+UGameplayTasksComponent <|-- UAbilitySystemComponent
+UGameplayTask <|-- UAbilityTask
+UAbilityTask <- UGameplayAbility
+
+@enduml
