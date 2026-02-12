@@ -25,6 +25,7 @@ ASampleProjectileActor::ASampleProjectileActor()
 	projectileMovementComponent->InitialSpeed = 500.f;
 	projectileMovementComponent->MaxSpeed = 1500.f;
 	projectileMovementComponent->bShouldBounce=false;
+	projectileMovementComponent->bRotationFollowsVelocity = true;
 	
 	
 	InitialLifeSpan = 10.0f;
@@ -54,6 +55,8 @@ void ASampleProjectileActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
+	
 	GEngine->AddOnScreenDebugMessage(3,1.0f,FColor::Red,FString::Printf(TEXT("%s Velocity : %s"),*GetName(),*projectileMovementComponent->Velocity.ToString()));
 }
 
@@ -98,9 +101,10 @@ void ASampleProjectileActor::ReadyToFireUsingInterpolation(TObjectPtr<AActor> Sh
 void ASampleProjectileActor::ReadyToFireUsingMoveComponent(TObjectPtr<AActor> ShooterActor, const FVector Direction)
 {
 	SetOwner(ShooterActor);
-	//projectileMovementComponent->MoveUpdatedComponent(Direction,GetActorRotation(),true);
-
-	//projectileMovementComponent->AddForce(Direction*100000.f);
+	
+	// この関数を使って発射体が向かう方面を変える。
+	projectileMovementComponent->SetVelocityInLocalSpace(Direction.GetSafeNormal()*500.f);
+	
 	//MeshComponentのマテリアルのカーラを変わってより認識やすくなるために
     if(UMaterialInstanceDynamic* material = meshComponent->CreateDynamicMaterialInstance(0))
     {

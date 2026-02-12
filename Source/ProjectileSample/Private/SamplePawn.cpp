@@ -141,12 +141,11 @@ TObjectPtr<ASampleProjectileActor> ASamplePawn::makeProjectile()
 	if (UWorld* world = GetWorld())
 	{
 
-		FVector spawnLocation = GetActorLocation() + GetActorForwardVector() * 100.0f + FVector(0.0f,0.0f,230.f);
-		FRotator spawnRotation = GetActorRotation();
+		FVector spawnLocation = GetActorLocation() + GetActorForwardVector() * 100.0f /* + FVector(0.0f,0.0f,230.f)*/;
+		FRotator spawnRotation = cameraComponent->GetComponentRotation();
 		
 		retObject = world->SpawnActor<ASampleProjectileActor>(projectileClass.Get());
 		retObject->SetActorLocationAndRotation(spawnLocation,spawnRotation);
-		
 	}
 	else
 	{
