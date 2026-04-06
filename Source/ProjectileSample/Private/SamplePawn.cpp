@@ -12,6 +12,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Input/WeaponFireInputAction.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASamplePawn::ASamplePawn()
@@ -88,6 +89,7 @@ void ASamplePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	inputComponent->BindAction(inputAction,ETriggerEvent::Started,this,&ASamplePawn::OnClickMouse);
 	inputComponent->BindAction(moveAction,ETriggerEvent::Triggered,this,&ASamplePawn::movePawn);
 	inputComponent->BindAction(lookAction,ETriggerEvent::Triggered,this,&ASamplePawn::lookUp);
+	inputComponent->BindAction(switchFireMode,ETriggerEvent::Started,this,&ASamplePawn::SwitchMoveFunctionMode);
 
 	//inputComponent->BindAction(FName(TEXT("IA_WeaponFire")),ETriggerEvent::Triggered,this,&ASamplePawn::OnClickMouse);
 	//inputComponent->BindAction(nullptr,ETriggerEvent::Started,this,&ASamplePawn::OnClickMouse);
@@ -109,19 +111,22 @@ void ASamplePawn::OnClickMouse()
 	TObjectPtr<ASampleProjectileActor> toShotProjectile = makeProjectile();
 	
 	
+	const FVector fireDirection = GetActorForwardVector().RotateAngleAxis(-20.f,FVector::RightVector);
 	
 	// 基本的には下のように作成さればNGですが…
 	switch (moveFunctionMode)
 	{
 		case E_MoveFunctionMode::MoveComponent:
 			{
-				const FVector fireDirection = GetActorForwardVector().RotateAngleAxis(-45.f,FVector::RightVector);
+				
 				toShotProjectile->ReadyToFireUsingMoveComponent(this,fireDirection);
 			}
 		break;
 		case E_MoveFunctionMode::Interpolation:
 			{
-				
+				// ターゲットを探索
+				//const TWeakObjectPtr<USceneComponent> targetLocation = findTargetComponent();
+				toShotProjectile->ReadyToFireUsingInterpolation(this,fireDirection);
 			}
 		break;
 		
@@ -153,5 +158,19 @@ TObjectPtr<ASampleProjectileActor> ASamplePawn::makeProjectile()
 	}
 
 	return retObject;
+}
+
+const TWeakObjectPtr<USceneComponent> ASamplePawn::findTargetComponent()
+{
+	TWeakObjectPtr<USceneComponent> retval = nullptr;
+	TArray<AActor*> actors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(),FName(TEXT("Target")),actors);
+	
+	if (actors.Num() > 0)
+	{
+		retval = actors[0]->GetRootComponent();
+	}
+	
+	return retval;
 }
 

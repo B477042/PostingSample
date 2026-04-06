@@ -23,7 +23,7 @@ ASampleProjectileActor::ASampleProjectileActor()
 	
 
 	projectileMovementComponent->InitialSpeed = 500.f;
-	projectileMovementComponent->MaxSpeed = 1500.f;
+	projectileMovementComponent->MaxSpeed = 6000.f;
 	projectileMovementComponent->bShouldBounce=false;
 	projectileMovementComponent->bRotationFollowsVelocity = true;
 	
@@ -81,13 +81,15 @@ void ASampleProjectileActor::OnSphereOverlapped(	UPrimitiveComponent* Overlapped
 	//Destroy();
 }
 
-void ASampleProjectileActor::ReadyToFireUsingInterpolation(TObjectPtr<AActor> ShooterActor, const FVector TargetToFire)
+void ASampleProjectileActor::ReadyToFireUsingInterpolation(TObjectPtr<AActor> ShooterActor, const FVector Direction)
 {
 
 	SetOwner(ShooterActor);
 
 	//UGameplayStatics::PredictProjectilePath();
-	projectileMovementComponent->MoveInterpolationTarget(TargetToFire,GetActorRotation());
+	projectileMovementComponent->bInterpMovement=true;
+	projectileMovementComponent->SetInterpolatedComponent(meshComponent);
+	projectileMovementComponent->SetVelocityInLocalSpace(Direction.GetSafeNormal()*9000.f);
 	//MeshComponentのマテリアルのカーラを変わってより認識やすくなるために
 	if(UMaterialInstanceDynamic* material = meshComponent->CreateDynamicMaterialInstance(0))
 	{
@@ -95,6 +97,17 @@ void ASampleProjectileActor::ReadyToFireUsingInterpolation(TObjectPtr<AActor> Sh
 		material->SetVectorParameterValue(paramName,FLinearColor::Blue);
     	
 	} 
+	//if (USceneComponent* gettedTargetComponent = TargetComponent.Get())
+	//{
+		const FVector newLocation = GetActorLocation()+(GetActorForwardVector()*1000.f);
+		projectileMovementComponent->MoveInterpolationTarget(GetActorLocation() ,GetActorRotation());	
+		projectileMovementComponent->AddForce(newLocation);
+	//}
+	FPredictProjectilePathParams PredictParams;
+	FPredictProjectilePathResult PredictResult;
+	
+	
+	//
 	
 }
 
@@ -103,7 +116,7 @@ void ASampleProjectileActor::ReadyToFireUsingMoveComponent(TObjectPtr<AActor> Sh
 	SetOwner(ShooterActor);
 	
 	// この関数を使って発射体が向かう方面を変える。
-	projectileMovementComponent->SetVelocityInLocalSpace(Direction.GetSafeNormal()*500.f);
+	projectileMovementComponent->SetVelocityInLocalSpace(Direction.GetSafeNormal()*9000.f);
 	
 	//MeshComponentのマテリアルのカーラを変わってより認識やすくなるために
     if(UMaterialInstanceDynamic* material = meshComponent->CreateDynamicMaterialInstance(0))

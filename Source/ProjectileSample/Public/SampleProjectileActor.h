@@ -36,14 +36,14 @@ public:
 
 
 	// ProjectileMovementComponentの「MoveInterpolationTarget」関数を呼びます。
-	void ReadyToFireUsingInterpolation(TObjectPtr<AActor>ShooterActor, const FVector TargetToFire);
+	void ReadyToFireUsingInterpolation(TObjectPtr<AActor> ShooterActor, const FVector Direction);
 	// ProjectileMovementComponentの「MoveUpdatedComponent」関数を呼びます。
 	void ReadyToFireUsingMoveComponent(TObjectPtr<AActor>ShooterActor, const FVector Direction);
 	
 protected:
 	UPROPERTY(BlueprintReadWrite,EditAnywhere,meta=(AllowPrivateAccess=true))
 	TObjectPtr<UProjectileMovementComponent> projectileMovementComponent;
-
+	
 	// For collision
 	UPROPERTY(BlueprintReadWrite,EditAnywhere,meta=(AllowPrivateAccess=true))
 	TObjectPtr<USphereComponent> sphereComponent;

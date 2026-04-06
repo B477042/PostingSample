@@ -56,7 +56,7 @@ public:
 protected:
 	
 	TObjectPtr<ASampleProjectileActor> makeProjectile();
-	
+	const TWeakObjectPtr<USceneComponent> findTargetComponent();
 	void movePawn(const FInputActionValue& Value);
 	void lookUp(const FInputActionValue& Value);
 protected:
@@ -72,6 +72,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input", meta=(AllowPrivateAccess=true))
 	UInputAction* lookAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input", meta=(AllowPrivateAccess=true))
+	UInputAction* switchFireMode;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Camera",meta=(AllowPrivateAccess=true))
 	UCameraComponent* cameraComponent;
