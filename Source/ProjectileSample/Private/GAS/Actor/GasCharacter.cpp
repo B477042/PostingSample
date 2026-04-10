@@ -2,6 +2,14 @@
 
 
 #include "GAS/Actor/GasCharacter.h"
+
+#include "AbilitySystemComponent.h"
+#include "EnhancedInputComponent.h"
+#include "InputAction.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GAS/Actor/GasPlayerController.h"
+#include "GAS/DataAsset/PlayerInputDataAsset.h"
+#include "GAS/Player/GasPlayerState.h"
 // Sets default values
 AGasCharacter::AGasCharacter()
 {
@@ -26,6 +34,37 @@ void AGasCharacter::Tick(float DeltaTime)
 void AGasCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	if (!enhancedInputComponent)
+	{
+		return;
+	}
+	
+	//プレイヤーのコントローラーからデータアセット
+	if (const AGasPlayerController* gasPlayerController = Cast<AGasPlayerController>( GetController()))
+	{
+		const TWeakObjectPtr<UPlayerInputDataAsset> weakPlayerInputDataAsset = gasPlayerController->GetPlayerInputDataAsset();
+		if ( weakPlayerInputDataAsset.Pin().IsValid() )
+		{
+			
+			auto BindActionInputLambda = [weakPlayerInputDataAsset, enhancedInputComponent, this](E_CommonPlayerInputType CommonPlayerInput, 
+				ETriggerEvent TriggerEventType, auto FunctionName)->void
+			{
+				if (UInputAction* loadedAction =  weakPlayerInputDataAsset->GetInputAction(CommonPlayerInput))
+				{
+					// BindAction(const UInputAction* Action, ETriggerEvent TriggerEvent, UObject* Object, FName FunctionName)
+					enhancedInputComponent->BindAction(loadedAction, TriggerEventType, this, FunctionName);
+				}
+			};
+			
+			// binding action
+			BindActionInputLambda(E_CommonPlayerInputType::Walk, ETriggerEvent::Triggered, &AGasCharacter::onCommonWalk);
+			BindActionInputLambda(E_CommonPlayerInputType::Look, ETriggerEvent::Triggered, &AGasCharacter::onCommonLook);
+			BindActionInputLambda(E_CommonPlayerInputType::Jump, ETriggerEvent::Started, &AGasCharacter::onCommonJump);
+			BindActionInputLambda(E_CommonPlayerInputType::Interaction, ETriggerEvent::Started, &AGasCharacter::onCommonInteraction);
+		}
+	}
 }
 
 UAbilitySystemComponent* AGasCharacter::GetAbilitySystemComponent() const
@@ -36,11 +75,65 @@ UAbilitySystemComponent* AGasCharacter::GetAbilitySystemComponent() const
 void AGasCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	
+	//プレイヤーの場合
 	if (NewController->IsA(APlayerController::StaticClass()))
 	{
-		GetPlayerState();
+		if (AGasPlayerState* gasPlayerState = Cast<AGasPlayerState>(GetPlayerState()))
+		{
+			abilitySystemComponent =  gasPlayerState->GetAbilitySystemComponent();
+			gasPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(gasPlayerState,this);
+			
+			attributeSetBase =  gasPlayerState->GetAttributeSet();
+			
+			
+		}
 	}
+	
+}
+
+void AGasCharacter::UnPossessed()
+{
+	Super::UnPossessed();
+	if (UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>( InputComponent))
+	{
+		if (enhancedInputComponent->HasBindings())
+		{
+			enhancedInputComponent->ClearBindingsForObject(this);
+		}
+	}
+}
+
+void AGasCharacter::onCommonWalk(const FInputActionValue& Value)
+{
+	const FVector2D movementVector = Value.Get<FVector2D>();
+	//Chara Movmement Component の状態を確認する必要があり
+	AddMovementInput(GetActorForwardVector(),movementVector.Y);
+	AddMovementInput(GetActorRightVector(),movementVector.X);
+	
+}
+
+void AGasCharacter::onCommonLook(const FInputActionValue& Value)
+{
+	const FVector2D lookVector = Value.Get<FVector2D>();
+	
+	if (Controller)
+	{
+		AddControllerYawInput(lookVector.X);
+		AddControllerPitchInput(lookVector.Y);
+	}
+}
+
+void AGasCharacter::onCommonJump()
+{
+	
+	GetCharacterMovement()->DoJump(false,5.0f);
+	
+
+}
+
+void AGasCharacter::onCommonInteraction()
+{
+	// 他の物体と相互作用します
 	
 }
 

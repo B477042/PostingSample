@@ -2,3 +2,8 @@
 
 
 #include "GAS/Ability/BaseGameplayAbility.h"
+
+UBaseGameplayAbility::UBaseGameplayAbility()
+{
+	
+}

@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include "GasPlayerController.generated.h"
 
+class UPlayerInputDataAsset;
+class UInputMappingContext;
 /**
  * 
  */
@@ -18,9 +20,16 @@ public:
 	AGasPlayerController();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
+	TWeakObjectPtr<UPlayerInputDataAsset> GetPlayerInputDataAsset() const;
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* aPawn) override;
 	virtual void OnUnPossess() override;
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input", meta=(AllowPrivateAccess="true"))
+	TSoftObjectPtr<UInputMappingContext> CommonPlayerInputContext;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category="Input", meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UPlayerInputDataAsset> DA_PlayerInputData;
 };

@@ -17,9 +17,10 @@ class PROJECTILESAMPLE_API UBaseGameplayAbility : public UGameplayAbility
 public:
 	UBaseGameplayAbility();
 	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category=TEXT("Ability"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 	E_GasAbilityInputID AbilityInputID = E_GasAbilityInputID::None;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category=TEXT("Ability"))
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ability")
 	E_GasAbilityInputID AbilityID = E_GasAbilityInputID::None;
 	
 	

@@ -13,6 +13,7 @@ enum class E_GasAbilityInputID : uint8
 {
 	None = 0 UMETA(DisplayName = "None"),
 	Sprint = 1 UMETA(DisplayName = "Sprint"),
-	Jump = 2 UMETA(DisplayName = "Jump")
+	Jump = 2 UMETA(DisplayName = "Jump"),
+	Walk = 3 UMETA(DisplayName = "Walk")
 	
 };

@@ -8,6 +8,7 @@
 
 #include "GasCharacter.generated.h"
 
+struct FInputActionValue;
 class UAttributeSetBase;
 
 UCLASS(Blueprintable)
@@ -18,13 +19,10 @@ class PROJECTILESAMPLE_API AGasCharacter : public ACharacter, public IAbilitySys
 public:
 	// Sets default values for this character's properties
 	AGasCharacter();
-
-protected:
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	
-public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -34,8 +32,15 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	virtual void PossessedBy(AController* NewController) override;
-
+	virtual void UnPossessed() override;
 protected:
+	// Input Actionへ対応して使える関数
+	
+	void onCommonWalk(const FInputActionValue& Value);
+	void onCommonLook(const FInputActionValue& Value);
+	void onCommonJump();
+	void onCommonInteraction();
+	protected:
 	// 原本はPlayerStateに存在しています。
 	TWeakObjectPtr<UAbilitySystemComponent> abilitySystemComponent;
 	TWeakObjectPtr<UAttributeSetBase> attributeSetBase;
