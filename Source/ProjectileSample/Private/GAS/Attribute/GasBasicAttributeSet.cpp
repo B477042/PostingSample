@@ -7,7 +7,7 @@
 #define REPFUNCTION_DEFINE(PropertyName) \
 void UGasBasicAttributeSet::OnRep_##PropertyName(const FGameplayAttributeData& Old##PropertyName) \
 {\
-GAMEPLAYATTRIBUTE_REPNOTIFY(UGasBasicAttributeSet, ##PropertyName, Old##PropertyName); \
+GAMEPLAYATTRIBUTE_REPNOTIFY(UGasBasicAttributeSet, PropertyName, Old##PropertyName); \
 }\
 
 UGasBasicAttributeSet::UGasBasicAttributeSet()

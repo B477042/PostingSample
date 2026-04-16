@@ -33,6 +33,8 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UGasBasicAttributeSet* GetAttributeSet() const;
 	
+	void LoadPlayerAbility() const;
+	
 protected:
 	virtual void BeginPlay() override;
 	void bindAttributesChangedDelegate();
@@ -45,4 +47,6 @@ public:
 
 	// Attribute Macro
 	ATTRIBUTE_CODE_GEN(int32, HealthPoint)
+	
+	
 };

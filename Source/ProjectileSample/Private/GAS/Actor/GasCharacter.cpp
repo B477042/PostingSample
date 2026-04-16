@@ -10,6 +10,7 @@
 #include "GAS/Actor/GasPlayerController.h"
 #include "GAS/DataAsset/PlayerInputDataAsset.h"
 #include "GAS/Player/GasPlayerState.h"
+#include "GAS/Attribute/GasBasicAttributeSet.h"
 // Sets default values
 AGasCharacter::AGasCharacter()
 {
@@ -76,7 +77,7 @@ void AGasCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	//プレイヤーの場合
-	if (NewController->IsA(APlayerController::StaticClass()))
+	if (AGasPlayerController* gasPlayerController = Cast<AGasPlayerController>(NewController))
 	{
 		if (AGasPlayerState* gasPlayerState = Cast<AGasPlayerState>(GetPlayerState()))
 		{
@@ -85,8 +86,10 @@ void AGasCharacter::PossessedBy(AController* NewController)
 			
 			attributeSetBase =  gasPlayerState->GetAttributeSet();
 			
-			
 		}
+		
+		
+		
 	}
 	
 }

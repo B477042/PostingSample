@@ -24,6 +24,13 @@ UGasBasicAttributeSet* AGasPlayerState::GetAttributeSet() const
 	return gasBasicAttributeSet;
 }
 
+void AGasPlayerState::LoadPlayerAbility() const
+{
+	//PlayerControllerから呼ぶ出す
+	//Playerが持っている能力をロードして
+	
+}
+
 void AGasPlayerState::BeginPlay()
 {
 	Super::BeginPlay();

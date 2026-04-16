@@ -8,8 +8,9 @@
 
 #include "GasCharacter.generated.h"
 
+class UGasBasicAttributeSet;
 struct FInputActionValue;
-class UAttributeSetBase;
+
 
 UCLASS(Blueprintable)
 class PROJECTILESAMPLE_API AGasCharacter : public ACharacter, public IAbilitySystemInterface
@@ -43,5 +44,5 @@ protected:
 	protected:
 	// 原本はPlayerStateに存在しています。
 	TWeakObjectPtr<UAbilitySystemComponent> abilitySystemComponent;
-	TWeakObjectPtr<UAttributeSetBase> attributeSetBase;
+	TWeakObjectPtr<UGasBasicAttributeSet> attributeSetBase;
 };
