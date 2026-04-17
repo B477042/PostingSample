@@ -20,6 +20,7 @@ void UGasGameInstance::Init()
 	{
 		systemHolder->InitSystemHolder();
 	}
+	
 }
 
 void UGasGameInstance::Shutdown()
@@ -32,3 +33,9 @@ void UGasGameInstance::Shutdown()
 	}
 	
 }
+
+const TSharedPtr<FSystemHolder> UGasGameInstance::GetSystemHolder() const
+{
+	return systemHolder;
+}
+

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Interface/IGasPresenter.h"
 
+
 class FGasPresenter : public TSharedFromThis<FGasPresenter>, public IGasPresenter
 {
 public:
@@ -9,4 +10,11 @@ public:
 	virtual ~FGasPresenter() override;
 	
 	virtual void Initialize() override;
+	virtual TArray<UBaseGameplayAbility*> GetPlayerDefaultAbility() override;
+
+private:
+	
+	
+	TWeakPtr<IGasModel> gasModelWeakPtr;
+	TWeakPtr<IGasView> gasViewWeakPtr;
 };

@@ -22,7 +22,7 @@ public:
 	virtual void Shutdown() override;
 	
 	const TSharedPtr<FSystemHolder> GetSystemHolder() const;
-	
+
 private:
 	TSharedPtr<FSystemHolder> systemHolder;
 };

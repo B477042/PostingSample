@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "Interface/IGasModel.h"
 
+enum class E_GameAbilityType : uint8;
+
 class FGasModel :  public TSharedFromThis<FGasModel> , public IGasModel 
 {
 public:
@@ -9,4 +11,10 @@ public:
 	
 	
 	virtual void Initialize() override;
+
+	virtual const TArray<E_GameAbilityType>& GetPlayerDefaultAbilityType() override;
+
+private:
+	TArray<E_GameAbilityType> defaultAbilityForPlayer;
+	
 };

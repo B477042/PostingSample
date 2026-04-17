@@ -6,9 +6,19 @@
 #include "Engine/DataAsset.h"
 #include "GameAbilityDataAsset.generated.h"
 
+class UBaseGameplayAbility;
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum class E_GameAbilityType : uint8
+{
+	Default = 0,
+	Sprint = 1,
+	Jump = 2
+};
+
 UCLASS(Blueprintable)
 class PROJECTILESAMPLE_API UGameAbilityDataAsset : public UDataAsset
 {
@@ -16,5 +26,9 @@ class PROJECTILESAMPLE_API UGameAbilityDataAsset : public UDataAsset
 public:
 	UGameAbilityDataAsset();
 	
+	TSoftClassPtr<UBaseGameplayAbility> GetAbilityFromType(E_GameAbilityType Type);
 	
+protected:
+	UPROPERTY(EditAnywhere,blueprintReadWrite,meta=(AllowPrivateAccess=true))
+	TMap<E_GameAbilityType, TSoftClassPtr<UBaseGameplayAbility>> GasAbilityClasses;
 };

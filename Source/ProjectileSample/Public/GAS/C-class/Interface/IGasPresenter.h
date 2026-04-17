@@ -1,10 +1,16 @@
 ﻿#pragma once
+#include "IGasModel.h"
+#include "IGasView.h"
+#include "GAS/Ability/BaseGameplayAbility.h"
+
 
 class IGasPresenter
 {
 public:
-	IGasPresenter(){}
+	IGasPresenter();
 	virtual ~IGasPresenter(){}
 	
-	virtual void Initialize()=0;
+	virtual void Initialize() = 0;
+	
+	virtual TArray<UBaseGameplayAbility*> GetPlayerDefaultAbility()=0;
 };
