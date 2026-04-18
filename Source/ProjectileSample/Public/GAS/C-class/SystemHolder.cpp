@@ -5,9 +5,7 @@
 #include "GasView.h"
 
 
-FSystemHolder::FSystemHolder()
-{
-}
+TSharedPtr<FSystemHolder> FSystemHolder::instance = nullptr;
 
 FSystemHolder::~FSystemHolder()
 {

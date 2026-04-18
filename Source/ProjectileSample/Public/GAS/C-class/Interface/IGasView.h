@@ -10,5 +10,5 @@ public:
 	virtual ~IGasView(){}
 	
 	virtual void Initialize() = 0;
-	virtual const TArray<UBaseGameplayAbility*> ReqLoadPlayerDefaultAbility() = 0;
+	virtual const TArray<TSubclassOf<UBaseGameplayAbility>> ReqLoadPlayerDefaultAbility() = 0;
 };

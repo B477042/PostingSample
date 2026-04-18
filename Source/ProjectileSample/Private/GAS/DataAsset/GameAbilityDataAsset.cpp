@@ -12,7 +12,7 @@ UGameAbilityDataAsset::UGameAbilityDataAsset()
 	
 }
 
-TSoftClassPtr<UBaseGameplayAbility> UGameAbilityDataAsset::GetAbilityFromType(E_GameAbilityType Type)
+TSubclassOf<UBaseGameplayAbility> UGameAbilityDataAsset::GetAbilityFromType(E_GameAbilityType Type)
 {
 	return GasAbilityClasses[Type];
 }

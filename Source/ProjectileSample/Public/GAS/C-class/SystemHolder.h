@@ -8,18 +8,29 @@
 class FSystemHolder final : public TSharedFromThis<FSystemHolder>
 {
 public:
-	FSystemHolder();
+
 	~FSystemHolder();
+
+	static TSharedPtr<FSystemHolder> Get()
+	{
+		if (instance==nullptr)
+		{
+			instance = MakeShareable(new FSystemHolder());
+		}
+		return instance;
+	}
 	
 	FSystemHolder(const FSystemHolder&) = delete;
 	FSystemHolder& operator=(const FSystemHolder&) = delete;
+	FSystemHolder(const FSystemHolder&&) = delete;
+	FSystemHolder& operator=(const FSystemHolder&&) = delete;
 	
 	void InitSystemHolder();
 	void ResetSystemHolder();
 	
 private:
-	
-	
+	FSystemHolder() = default;
+	static TSharedPtr<FSystemHolder> instance;
 	void setGasModel (TSharedPtr<IGasModel> newGasModel) ;
 public:
 	

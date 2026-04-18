@@ -10,7 +10,7 @@ public:
 	virtual ~FGasView() override;
 
 	virtual void Initialize() override;
-	virtual const TArray<UBaseGameplayAbility*> ReqLoadPlayerDefaultAbility() override;
+	virtual const TArray<TSubclassOf<UBaseGameplayAbility>> ReqLoadPlayerDefaultAbility() override;
 	
 private:
 	//circular referenceを防止するため

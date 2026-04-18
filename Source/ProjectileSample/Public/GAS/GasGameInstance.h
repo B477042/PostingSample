@@ -6,23 +6,30 @@
 #include "Engine/GameInstance.h"
 #include "GasGameInstance.generated.h"
 
+class UGameAbilityDataAsset;
 class FSystemHolder;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class PROJECTILESAMPLE_API UGasGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
 public:
 	UGasGameInstance();
-	
+	static UGasGameInstance* GetGameInstance();
 	virtual void Init() override;
 	virtual void Shutdown() override;
 	
-	const TSharedPtr<FSystemHolder> GetSystemHolder() const;
-
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UGameAbilityDataAsset* GetGasAbilityDataAsset() const;
+	
 private:
-	TSharedPtr<FSystemHolder> systemHolder;
+	TWeakPtr<FSystemHolder> systemHolder;
+
+	
+private:
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,meta=(AllowPrivateAccess = true))
+	TObjectPtr<UGameAbilityDataAsset> gameAbilityDataAsset;
 };

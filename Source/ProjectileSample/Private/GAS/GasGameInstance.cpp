@@ -15,10 +15,10 @@ void UGasGameInstance::Init()
 {
 	Super::Init();
 	
-	systemHolder = MakeShared<FSystemHolder>();
+	systemHolder = FSystemHolder::Get();
 	if (systemHolder.IsValid())
 	{
-		systemHolder->InitSystemHolder();
+		systemHolder.Pin()->InitSystemHolder();
 	}
 	
 }
@@ -28,14 +28,35 @@ void UGasGameInstance::Shutdown()
 	Super::Shutdown();
 	if (systemHolder.IsValid())
 	{
-		systemHolder->ResetSystemHolder();
+		systemHolder.Pin()->ResetSystemHolder();
 		systemHolder.Reset();
 	}
 	
 }
 
-const TSharedPtr<FSystemHolder> UGasGameInstance::GetSystemHolder() const
+UGameAbilityDataAsset* UGasGameInstance::GetGasAbilityDataAsset() const
 {
-	return systemHolder;
+	return gameAbilityDataAsset;
 }
+
+UGasGameInstance* UGasGameInstance::GetGameInstance()
+{
+	if (!GEngine)
+	{
+		return nullptr;
+	}
+	// GEngineからゲームワールドを探して
+	for (const FWorldContext& worldContext : GEngine->GetWorldContexts())
+	{
+		if (worldContext.WorldType == EWorldType::Game || worldContext.WorldType == EWorldType::PIE)
+		{
+			if (UWorld* world = worldContext.World())
+			{
+				return Cast<UGasGameInstance>(world->GetGameInstance());
+			}
+		}
+	}
+	return nullptr;
+}
+
 

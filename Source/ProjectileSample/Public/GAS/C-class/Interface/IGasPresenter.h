@@ -12,5 +12,5 @@ public:
 	
 	virtual void Initialize() = 0;
 	
-	virtual TArray<UBaseGameplayAbility*> GetPlayerDefaultAbility()=0;
+	virtual TArray<TSubclassOf<UBaseGameplayAbility>> GetPlayerDefaultAbility()=0;
 };

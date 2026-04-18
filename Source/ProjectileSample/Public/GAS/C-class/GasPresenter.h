@@ -10,7 +10,7 @@ public:
 	virtual ~FGasPresenter() override;
 	
 	virtual void Initialize() override;
-	virtual TArray<UBaseGameplayAbility*> GetPlayerDefaultAbility() override;
+	virtual TArray<TSubclassOf<UBaseGameplayAbility>> GetPlayerDefaultAbility() override;
 
 private:
 	

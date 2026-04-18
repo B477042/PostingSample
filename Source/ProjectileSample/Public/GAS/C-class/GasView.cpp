@@ -14,13 +14,15 @@ FGasView::~FGasView()
 
 void FGasView::Initialize()
 {
-	//gasPresenterWeakPtr = GasPresenter;
+	TWeakPtr<FSystemHolder> systemHolder = FSystemHolder::Get();
+	
+	gasPresenterWeakPtr = systemHolder.Pin()->GetSystem<IGasPresenter>();
 }
 
 
-const TArray<UBaseGameplayAbility*> FGasView::ReqLoadPlayerDefaultAbility()
+const TArray<TSubclassOf<UBaseGameplayAbility>> FGasView::ReqLoadPlayerDefaultAbility()
 {
-	TArray<UBaseGameplayAbility*> retVal;
+	TArray<TSubclassOf<UBaseGameplayAbility>> retVal;
 	//
 	if (TSharedPtr<IGasPresenter> gasPresenter = gasPresenterWeakPtr.Pin())
 	{

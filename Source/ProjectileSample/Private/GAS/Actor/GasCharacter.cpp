@@ -11,6 +11,7 @@
 #include "GAS/DataAsset/PlayerInputDataAsset.h"
 #include "GAS/Player/GasPlayerState.h"
 #include "GAS/Attribute/GasBasicAttributeSet.h"
+#include "GAS/C-class/SystemHolder.h"
 // Sets default values
 AGasCharacter::AGasCharacter()
 {
@@ -76,6 +77,12 @@ UAbilitySystemComponent* AGasCharacter::GetAbilitySystemComponent() const
 void AGasCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+	
+	TSharedPtr<IGasView>gasView =  FSystemHolder::Get()->GetSystem<IGasView>();
+	if (!gasView.IsValid())
+	{
+		return;
+	}
 	//プレイヤーの場合
 	if (AGasPlayerController* gasPlayerController = Cast<AGasPlayerController>(NewController))
 	{
@@ -86,6 +93,10 @@ void AGasCharacter::PossessedBy(AController* NewController)
 			
 			attributeSetBase =  gasPlayerState->GetAttributeSet();
 			
+			gasView->ReqLoadPlayerDefaultAbility();
+			FGameplayAbilitySpec AbilitySpec;
+			AbilitySpec.Ability = 
+			abilitySystemComponent->GiveAbility()
 		}
 		
 		
