@@ -8,15 +8,20 @@
 #include "InputAction.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/Actor/GasPlayerController.h"
+#include "GAS/Actor/Component/GasCharacterMovementComponent.h"
 #include "GAS/DataAsset/PlayerInputDataAsset.h"
 #include "GAS/Player/GasPlayerState.h"
 #include "GAS/Attribute/GasBasicAttributeSet.h"
 #include "GAS/C-class/SystemHolder.h"
 // Sets default values
-AGasCharacter::AGasCharacter()
+AGasCharacter::AGasCharacter(const class FObjectInitializer& ObjectInitializer):
+Super(ObjectInitializer.SetDefaultSubobjectClass<UGasCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	
+
 }
 
 // Called when the game starts or when spawned
@@ -86,17 +91,21 @@ void AGasCharacter::PossessedBy(AController* NewController)
 	//プレイヤーの場合
 	if (AGasPlayerController* gasPlayerController = Cast<AGasPlayerController>(NewController))
 	{
-		if (AGasPlayerState* gasPlayerState = Cast<AGasPlayerState>(GetPlayerState()))
+		if (AGasPlayerState* gasPlayerState = GetPlayerState<AGasPlayerState>())
 		{
 			abilitySystemComponent =  gasPlayerState->GetAbilitySystemComponent();
 			gasPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(gasPlayerState,this);
 			
 			attributeSetBase =  gasPlayerState->GetAttributeSet();
 			
-			gasView->ReqLoadPlayerDefaultAbility();
-			FGameplayAbilitySpec AbilitySpec;
-			AbilitySpec.Ability = 
-			abilitySystemComponent->GiveAbility()
+			for (auto& abilityClass : gasView->ReqLoadPlayerDefaultAbility())
+			{
+				UBaseGameplayAbility* defaultAbilityObject = abilityClass.GetDefaultObject();
+				abilitySystemComponent->GiveAbility(
+					FGameplayAbilitySpec(abilityClass,1,int32(defaultAbilityObject->AbilityInputID),this)
+					);
+			}
+			
 		}
 		
 		

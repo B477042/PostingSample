@@ -48,8 +48,8 @@ TArray<TSubclassOf<UBaseGameplayAbility>> FGasPresenter::GetPlayerDefaultAbility
 	
 	for (const E_GameAbilityType abilityType :defaultAbilityTypes)
 	{
-		TSubclassOf<UBaseGameplayAbility>classPtr = gameAbilityDataAsset->GetAbilityFromType(abilityType);
-		
+		TSubclassOf<UBaseGameplayAbility>classPtr = gameAbilityDataAsset->GetAbilityFromType(abilityType).LoadSynchronous();
+		retVal.Add(classPtr);
 	}
 	
 	

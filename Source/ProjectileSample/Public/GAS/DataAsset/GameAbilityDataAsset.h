@@ -26,9 +26,9 @@ class PROJECTILESAMPLE_API UGameAbilityDataAsset : public UDataAsset
 public:
 	UGameAbilityDataAsset();
 	
-	TSubclassOf<UBaseGameplayAbility> GetAbilityFromType(E_GameAbilityType Type);
+	TSoftClassPtr<UBaseGameplayAbility> GetAbilityFromType(E_GameAbilityType Type);
 	
 protected:
 	UPROPERTY(EditAnywhere,blueprintReadWrite,meta=(AllowPrivateAccess=true,BlueprintBaseOnly=true, AllowAbstract = false))
-	TMap<E_GameAbilityType, TSubclassOf<UBaseGameplayAbility>> GasAbilityClasses;
+	TMap<E_GameAbilityType, TSoftClassPtr<UBaseGameplayAbility>> GasAbilityClasses;
 };

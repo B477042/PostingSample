@@ -6,6 +6,7 @@
 #include "BaseGameplayAbility.h"
 #include "SprintAbility.generated.h"
 
+class UCharacterMovementComponent;
 /**
  * 
  */
@@ -18,6 +19,9 @@ public:
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr,
 		FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
+	
+	virtual void OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
+	virtual void OnRemoveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -28,7 +32,11 @@ public:
 		const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility) override;
 	virtual bool CanBeCanceled() const override;
 	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category=SprintAbility)
+
+private:
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category=SprintAbility,meta=(AllowPrivateAccess = true))
 	uint8 bIsActivating :1;
 	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category=SprintAbility,meta=(AllowPrivateAccess = true))
+	TWeakObjectPtr<UCharacterMovementComponent> OwningMovementComponentWeakPtr;
 };

@@ -19,7 +19,7 @@ class PROJECTILESAMPLE_API AGasCharacter : public ACharacter, public IAbilitySys
 
 public:
 	// Sets default values for this character's properties
-	AGasCharacter();
+	AGasCharacter(const class FObjectInitializer& ObjectInitializer);
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -45,4 +45,7 @@ protected:
 	// 原本はPlayerStateに存在しています。
 	TWeakObjectPtr<UAbilitySystemComponent> abilitySystemComponent;
 	TWeakObjectPtr<UGasBasicAttributeSet> attributeSetBase;
+	
+protected:
+	
 };
