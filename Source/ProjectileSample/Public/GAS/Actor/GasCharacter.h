@@ -41,6 +41,7 @@ protected:
 	void onCommonLook(const FInputActionValue& Value);
 	void onCommonJump();
 	void onCommonInteraction();
+	void onCommonSprint();
 	protected:
 	// 原本はPlayerStateに存在しています。
 	TWeakObjectPtr<UAbilitySystemComponent> abilitySystemComponent;

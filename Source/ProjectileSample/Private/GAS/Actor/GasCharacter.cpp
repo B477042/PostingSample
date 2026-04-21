@@ -70,6 +70,7 @@ void AGasCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 			BindActionInputLambda(E_CommonPlayerInputType::Look, ETriggerEvent::Triggered, &AGasCharacter::onCommonLook);
 			BindActionInputLambda(E_CommonPlayerInputType::Jump, ETriggerEvent::Started, &AGasCharacter::onCommonJump);
 			BindActionInputLambda(E_CommonPlayerInputType::Interaction, ETriggerEvent::Started, &AGasCharacter::onCommonInteraction);
+			BindActionInputLambda(E_CommonPlayerInputType::Sprint, ETriggerEvent::Triggered, &AGasCharacter::onCommonSprint);
 		}
 	}
 }
@@ -158,5 +159,11 @@ void AGasCharacter::onCommonInteraction()
 {
 	// 他の物体と相互作用します
 	
+}
+
+void AGasCharacter::onCommonSprint()
+{
+	// 基本的にキャラクターを加速する能力ならSprintと扱いましょう
+	//GetAbilitySystemComponent()->active
 }
 

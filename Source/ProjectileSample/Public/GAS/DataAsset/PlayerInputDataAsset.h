@@ -18,7 +18,8 @@ enum E_CommonPlayerInputType:uint8
 	Walk = 1 UMETA(DisplayName="Walk"),
 	Jump = 2 UMETA(DisplayName="Jump"),
 	Look = 3 UMETA(DisplayName="Look"),
-	Interaction = 4 UMETA(DisplayName="Interaction")
+	Interaction = 4 UMETA(DisplayName="Interaction"),
+	Sprint = 5 UMETA(DisplayName="Sprint")
 	
 };
 

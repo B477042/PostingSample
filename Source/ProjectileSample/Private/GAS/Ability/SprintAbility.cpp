@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/GasComponent.h"
+#include "GAS/Actor/Component/GasCharacterMovementComponent.h"
 
 USprintAbility::USprintAbility()
 {
@@ -39,10 +40,10 @@ bool USprintAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
 void USprintAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
 	Super::OnGiveAbility(ActorInfo, Spec);
-	TWeakObjectPtr<UMovementComponent> actorInfoMovement = ActorInfo->MovementComponent;
+	auto actorInfoMovement = ActorInfo->MovementComponent.Pin();
 	if (actorInfoMovement.IsValid())
 	{
-		OwningMovementComponentWeakPtr = Cast<UCharacterMovementComponent>(actorInfoMovement);
+		OwningMovementComponentWeakPtr = Cast<UGasCharacterMovementComponent>(actorInfoMovement.Get());
 		if (OwningMovementComponentWeakPtr.IsValid())
 		{
 			// Log
@@ -64,14 +65,15 @@ void USprintAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	// 簡単にmovement　componentを値を操作しましょう。
-	TStrongObjectPtr<UCharacterMovementComponent> movementCompoennt = OwningMovementComponentWeakPtr.Pin();
-	if (!movementCompoennt.IsValid())
+	TStrongObjectPtr<UGasCharacterMovementComponent> movementComponent = OwningMovementComponentWeakPtr.Pin();
+	if (!movementComponent.IsValid())
 	{
 		UE_LOG(LogTemp,Warning,TEXT("SprintAbility Movement Component is NULL"));
 		return;
 	}
 	
-	TriggerEventData->
+	bIsActivating = true;
+	// 
 	
 	//movementCompoennt->
 	

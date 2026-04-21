@@ -6,7 +6,8 @@
 #include "BaseGameplayAbility.h"
 #include "SprintAbility.generated.h"
 
-class UCharacterMovementComponent;
+class UGasCharacterMovementComponent;
+
 /**
  * 
  */
@@ -38,5 +39,5 @@ private:
 	uint8 bIsActivating :1;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category=SprintAbility,meta=(AllowPrivateAccess = true))
-	TWeakObjectPtr<UCharacterMovementComponent> OwningMovementComponentWeakPtr;
+	TWeakObjectPtr<UGasCharacterMovementComponent> OwningMovementComponentWeakPtr;
 };
