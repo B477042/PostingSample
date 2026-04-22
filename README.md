@@ -1,1 +1,2 @@
-Movement Component 系の中には 「Projectile Movement Component」 というクラスがあります。名前のとおり、物体の運動を管理するために作成されたクラスです。今回はこのクラスの正体を探るとともに、「Movement Component」系について調べてみましょう。
+# このレポジトリーについて
+このレポはqittaへ記事を書くため生成したレポで、自分がテストしたい技術やコードの構成を適用しております。本日（2026/04/22）基準でGameAbilitySystem,EnhancedInput,MVPパターン,template,constexprなどうをテストしております。元々はPorjectileMovementComponentのテストのため初めて、もったいないなと思っていろんな機能のテストを始めました。
