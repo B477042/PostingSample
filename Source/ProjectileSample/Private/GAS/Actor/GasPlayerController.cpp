@@ -5,8 +5,11 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "Camera/CameraActor.h"
+#include "GAS/Actor/GasCameraActor.h"
 #include "GAS/Actor/GasCharacter.h"
 #include "GAS/DataAsset/PlayerInputDataAsset.h"
+#include "Kismet/GameplayStatics.h"
 
 AGasPlayerController::AGasPlayerController()
 {
@@ -25,6 +28,11 @@ UAbilitySystemComponent* AGasPlayerController::GetAbilitySystemComponent() const
 TWeakObjectPtr<UPlayerInputDataAsset> AGasPlayerController::GetPlayerInputDataAsset() const
 {
 	return DA_PlayerInputData;
+}
+
+AGasCameraActor* AGasPlayerController::GetCameraActor() const
+{
+	return CameraActor;
 }
 
 void AGasPlayerController::BeginPlay()
@@ -46,10 +54,29 @@ void AGasPlayerController::OnPossess(APawn* aPawn)
 			//
 		}
 	}
+	
+	// カメラコンポーネントをつけてみましょう
+	{
+		if (CameraActor.IsNull())
+		{
+			const FTransform& transform = aPawn->GetTransform();
+			CameraActor = Cast<AGasCameraActor>(GetWorld()->SpawnActor(AGasCameraActor::StaticClass()));
+			//CameraActor->SetActorTransform(transform);
+			
+		}
+		
+		SetViewTarget(CameraActor);
+		
+		CameraActor->AttachToActor(aPawn,FAttachmentTransformRules::KeepWorldTransform);
+		CameraActor->SetActorRelativeLocation(FVector(0.f,0.f,90.f));
+	}
 }
 
 void AGasPlayerController::OnUnPossess()
 {
 	Super::OnUnPossess();
 	
+	{
+		CameraActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	}
 }

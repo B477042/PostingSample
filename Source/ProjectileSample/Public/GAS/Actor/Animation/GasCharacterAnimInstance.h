@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "GasCharacterAnimInstance.generated.h"
 
+class UGasCharacterMovementComponent;
 /**
  * 
  */
@@ -19,6 +20,16 @@ public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetCurrentSpeed();
 	
+private:
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,Category="Character",meta=(AllowPrivateAccess=true))
+	TObjectPtr<UGasCharacterMovementComponent> characterMovementComponent;
 	
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,Category="character",meta=(AllowPrivateAccess=true))
+	FVector CurrentAcceleration;
+	
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,Category="character",meta=(AllowPrivateAccess=true))
+	float CurrentSpeed;
 };

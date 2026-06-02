@@ -54,7 +54,7 @@ public:
 	
 		else
 		{
-			nullptr;
+			return nullptr;
 		}
 	}
 	

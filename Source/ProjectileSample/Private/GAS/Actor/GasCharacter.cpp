@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputAction.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/Actor/GasPlayerController.h"
 #include "GAS/Actor/Component/GasCharacterMovementComponent.h"

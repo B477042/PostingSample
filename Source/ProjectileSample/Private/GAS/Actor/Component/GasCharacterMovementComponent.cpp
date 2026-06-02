@@ -34,3 +34,29 @@ void UGasCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick T
 	// ...
 }
 
+void UGasCharacterMovementComponent::StartSprinting()
+{
+	bIsSprinting = true;
+}
+
+void UGasCharacterMovementComponent::StopSprinting() 
+{
+	bIsSprinting = false;
+}
+
+bool UGasCharacterMovementComponent::IsSprinting() const
+{
+	return bIsSprinting;
+}
+
+float UGasCharacterMovementComponent::GetMaxSpeed() const
+{
+	float maxSpeed = Super::GetMaxSpeed();
+	if ( bIsSprinting && (MovementMode == MOVE_Walking || MovementMode == MOVE_NavWalking))
+	{
+		maxSpeed *= SprintSpeedMagnitude;
+	}
+	
+	return maxSpeed;
+}
+

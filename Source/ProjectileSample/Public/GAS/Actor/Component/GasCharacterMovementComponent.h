@@ -24,12 +24,20 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+	virtual float GetMaxSpeed() const override;
 	
+	void StartSprinting();
+	void StopSprinting();
+	FORCEINLINE bool IsSprinting() const;
 protected:
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="ValueOption",meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Sprint|ValueOption",meta=(AllowPrivateAccess=true))
 	float SprintSpeedMagnitude;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="ValueOption",meta=(AllowPrivateAccess=true))
-	float SprintLerpToStartSprint;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="ValueOption",meta=(AllowPrivateAccess=true))
-	float SprintLerpToEndSprint;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Sprint|ValueOption",meta=(AllowPrivateAccess=true))
+	uint8 bIsSprinting:1;
+	
+	// UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="ValueOption",meta=(AllowPrivateAccess=true))
+	// float SprintLerpToStartSprint;
+	// UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="ValueOption",meta=(AllowPrivateAccess=true))
+	// float SprintLerpToEndSprint;
 };
