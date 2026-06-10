@@ -46,4 +46,6 @@ class PROJECTILESAMPLE_API UGasBasicAttributeSet : public UAttributeSet
 	UGasBasicAttributeSet();
 	ATTRIBUTE_ACCESSORS_WITH_REP(UGasBasicAttributeSet, Health, HealthPoint)
 	
+	ATTRIBUTE_ACCESSORS_WITH_REP(UGasBasicAttributeSet, ActionPoint, ActionPoint)
+	
 };

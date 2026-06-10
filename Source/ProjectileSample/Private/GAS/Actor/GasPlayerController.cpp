@@ -67,7 +67,7 @@ void AGasPlayerController::OnPossess(APawn* aPawn)
 		
 		SetViewTarget(CameraActor);
 		
-		CameraActor->AttachToActor(aPawn,FAttachmentTransformRules::KeepWorldTransform);
+		CameraActor->AttachToActor(aPawn,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		CameraActor->SetActorRelativeLocation(FVector(0.f,0.f,90.f));
 	}
 }

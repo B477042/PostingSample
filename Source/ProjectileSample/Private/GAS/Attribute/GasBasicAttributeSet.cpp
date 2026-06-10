@@ -15,3 +15,4 @@ UGasBasicAttributeSet::UGasBasicAttributeSet()
 }
 
 REPFUNCTION_DEFINE(HealthPoint)
+REPFUNCTION_DEFINE(ActionPoint)
